@@ -4,6 +4,7 @@ import { ActivityIndicator, Dimensions, View, FlatList, Text, ScrollView } from 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Carousel from 'react-native-snap-carousel';
+import { HorizontalSlider } from '../components/HorizontalSlider';
 
 import { MoviePoster } from '../components/MoviePoster';
 import { useMovies } from '../hooks/useMovies';
@@ -12,7 +13,7 @@ const { width: windowWith } = Dimensions.get('window');
 
 const HomeScreen = () => {
 
-    const { cartelera, isLoading } = useMovies();
+    const { nowPlaying, popular, topRated, upcoming, isLoading,  } = useMovies();
     const { top } = useSafeAreaInsets();
 
 
@@ -33,12 +34,10 @@ const HomeScreen = () => {
 
                 <View style={{ height: 440 }}>
                     <Carousel
-                        data={cartelera}
+                        data={nowPlaying}
                         renderItem={({ item }: any) => (
 
                             <MoviePoster movie={item}
-
-
                             />
 
                         )}
@@ -47,39 +46,16 @@ const HomeScreen = () => {
 
                     />
                 </View>
-
-                <View style={{ height: 260 }}>
-
-                    <Text style={{ fontSize: 30, fontWeight: 'bold' }}>En cine</Text>
-
-                    <FlatList
-                        data={cartelera}
-                        renderItem={({ item }: any) => <MoviePoster width={120} height={200} movie={item} />}
-                        keyExtractor={(item) => item.id.toString()}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-
-                    />
-
-                </View>
-                <View style={{ height: 240 }}>
-
-<Text style={{ fontSize: 30, fontWeight: 'bold' }}>En cine</Text>
-
-<FlatList
-    data={cartelera}
-    renderItem={({ item }: any) => <MoviePoster width={120} height={170} movie={item} />}
-    keyExtractor={(item) => item.id.toString()}
-    horizontal={true}
-    showsHorizontalScrollIndicator={false}
-
-/>
-
-</View>
-
+                <HorizontalSlider title='Populares' movies={popular} />
+                <HorizontalSlider title='Mas valoradas' movies={topRated} />
+                <HorizontalSlider title='Promimamente' movies={upcoming} />
             </View>
         </ScrollView>
     )
 }
 
 export default HomeScreen
+
+
+
+
