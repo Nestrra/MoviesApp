@@ -1,12 +1,87 @@
+import { StackScreenProps } from '@react-navigation/stack'
 import React from 'react'
-import { Text, View } from 'react-native'
+import { ActivityIndicator, Dimensions, Image, StyleSheet, Text, View } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler';
+import { RootstackParams } from '../navigation/Navigation';
+import { useMovieDetails } from '../hooks/useMovieDetails';
+import { MovieDetails } from '../components/MovieDetails';
 
-const DetailScreen = () => {
+const screenHeight = Dimensions.get('screen').height;
+
+
+interface Props extends StackScreenProps<RootstackParams, 'Detail'> { }
+
+
+
+const DetailScreen = ({ route }: Props) => {
+
+    const movie = route.params;
+    const url = `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+
+
+    const { loading, cast, movieFull } = useMovieDetails(movie.id)
+
+
     return (
-        <View>
-            <Text>Hola desde home</Text>
-        </View>
+
+        <ScrollView>
+            <View style={styles.container}>
+                <Image
+                    source={{ uri: url }}
+                    style={styles.posterImage}
+                />
+            </View>
+            <View style={styles.marginContainer}>
+                <Text style={styles.subTitle} >{movie.original_title}</Text>
+                <Text style={styles.Title} >{movie.title}</Text>
+            </View>
+
+            {
+                loading ? <ActivityIndicator size={30} color='grey' style={{ marginTop: 20 }} /> : <MovieDetails movieFull={movieFull!} cast={cast} />
+            }
+
+
+
+        </ScrollView>
     )
 }
+
+
+const styles = StyleSheet.create({
+    posterImage: {
+        flex: 1,
+    },
+    container: {
+        width: '100%',
+        overflow: 'hidden',
+        height: screenHeight * 0.7,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.6,
+        shadowRadius: 3.84,
+
+        elevation: 12,
+        borderBottomEndRadius: 25,
+        borderBottomStartRadius: 25,
+    },
+    marginContainer: {
+        marginHorizontal: 20,
+        marginTop: 10,
+    },
+    subTitle: {
+        fontSize: 16,
+        opacity: 0.6,
+    },
+    Title: {
+        color: 'black',
+        fontSize: 18,
+        fontWeight: 'bold'
+    }
+});
+
+
 
 export default DetailScreen
