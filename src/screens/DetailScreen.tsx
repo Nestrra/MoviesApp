@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { RootstackParams } from '../navigation/Navigation';
 import { useMovieDetails } from '../hooks/useMovieDetails';
 import { MovieDetails } from '../components/MovieDetails';
+import  Icon  from 'react-native-vector-icons/Ionicons';
 
 const screenHeight = Dimensions.get('screen').height;
 
@@ -40,7 +41,12 @@ const DetailScreen = ({ route }: Props) => {
                 loading ? <ActivityIndicator size={30} color='grey' style={{ marginTop: 20 }} /> : <MovieDetails movieFull={movieFull!} cast={cast} />
             }
 
-
+            <Icon
+                name='arrow-back-outline'
+                size={80}
+                color='red'
+                style={styles.backButton}
+            />
 
         </ScrollView>
     )
@@ -79,6 +85,13 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 18,
         fontWeight: 'bold'
+    },
+    backButton:{
+        position:'absolute',
+        zIndex:999,
+        elevation:9,
+        top:30,
+        left:5,
     }
 });
 
